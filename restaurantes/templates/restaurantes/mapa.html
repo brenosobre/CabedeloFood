@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Restaurantes - CabedeloFood</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Leaflet CSS (Biblioteca de Mapas) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+        }
+        #mapa-container {
+            height: 70vh;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background-color: #24243e !important;
+            color: #fff !important;
+            border-radius: 8px;
+        }
+        .leaflet-popup-content a {
+            color: #ff4b2b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold fs-4 m-0" href="{% url 'home' %}"><i class="bi bi-shop me-2"></i>CabedeloFood</a>
+            <div class="d-flex">
+                <a href="{% url 'home' %}" class="btn btn-outline-light border-0 me-2 fw-bold"><i class="bi bi-house-door-fill me-1"></i>Início</a>
+                <a href="{% url 'ranking' %}" class="btn btn-outline-light border-0 me-2 fw-bold"><i class="bi bi-trophy-fill me-1"></i>Ranking</a>
+                <a href="{% url 'mapa' %}" class="btn btn-warning fw-bold text-dark shadow-sm"><i class="bi bi-map-fill me-1"></i>Mapa</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mt-4 mb-5 flex-grow-1">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold"><i class="bi bi-geo-alt text-danger me-2"></i>Mapa de Sabores</h2>
+            <p class="text-muted" style="color: #a0a0b8 !important;">Encontre os estabelecimentos mais próximos de você em Cabedelo.</p>
+        </div>
+
+        <div id="mapa-container"></div>
+    </div>
+
+    <!-- Serializa os dados dos restaurantes de forma segura para o JavaScript -->
+    {{ restaurantes_json|json_script:"restaurantes-data" }}
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        var map = L.map('mapa-container').setView([-6.9811, -34.8339], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Pega os dados injetados pelo Django de forma limpa
+        const restaurantesElement = document.getElementById('restaurantes-data');
+        if (restaurantesElement) {
+            const restaurantes = JSON.parse(restaurantesElement.textContent);
+
+            restaurantes.forEach(rest => {
+                if (rest.latitude && rest.longitude) {
+                    var marker = L.marker([rest.latitude, rest.longitude]).addTo(map);
+                    
+                    var popupContent = `
+                        <div style="text-align: center;">
+                            <strong style="font-size: 14px;">${rest.nome}</strong><br>
+                            <span style="font-size: 12px; color: #ccc;">${rest.endereco}</span><br>
+                            <a href="/restaurante/${rest.id}/avaliacoes/" style="display: inline-block; margin-top: 5px;">Ver Detalhes / Avaliações</a>
+                        </div>
+                    `;
+                    marker.bindPopup(popupContent);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

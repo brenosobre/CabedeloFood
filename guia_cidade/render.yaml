@@ -1,0 +1,20 @@
+databases:
+  - name: cabedelo-db
+    databaseName: cabedelofood
+    user: cabedelo_user
+
+services:
+  - type: web
+    name: cabedelofood
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn guia_cidade.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cabedelo-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

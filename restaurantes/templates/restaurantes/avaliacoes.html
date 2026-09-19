@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedbacks - {{ restaurante.nome }}</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Personalizado -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+        }
+        .card {
+            background-color: #24243e;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        .form-control, .form-select {
+            background-color: #1a1a2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #16213e;
+            color: #ffffff;
+            border-color: #ff4b2b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 75, 43, 0.25);
+        }
+        ::placeholder {
+            color: #a0a0b8 !important;
+            opacity: 0.7;
+        }
+        .text-muted {
+            color: #a0a0b8 !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-dark navbar-custom shadow-sm">
+        <div class="container">
+            <!-- Ícone de Voltar -->
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}"><i class="bi bi-arrow-left-short me-1"></i>Voltar</a>
+            <span class="navbar-text text-white fw-bold fs-5">Avaliações: {{ restaurante.nome }}</span>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            
+            <div class="col-md-5 mb-4">
+                <div class="card shadow-lg">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-4 text-center"><i class="bi bi-chat-right-text-fill text-warning me-2"></i>Deixe seu Feedback</h5>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                {{ form.as_p }}
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 fw-bold py-2 mt-2" style="background: linear-gradient(90deg, #11998e, #38ef7d); border: none;">
+                                <i class="bi bi-send-fill me-2"></i>Enviar Feedback
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <h5 class="fw-bold mb-4 px-2">O que estão dizendo:</h5>
+                {% for avaliacao in avaliacoes %}
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0 text-white"><i class="bi bi-person-circle me-2 text-secondary"></i>{{ avaliacao.autor }}</h6>
+                                
+                                <!-- Lógica para mostrar estrelas preenchidas ou vazias -->
+                                <span class="fs-6 text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= avaliacao.estrelas %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% else %}
+                                            <i class="bi bi-star" style="color: #4e4376;"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                                
+                            </div>
+                            <p class="mb-2 mt-3" style="color: #c8c8d8;">{{ avaliacao.comentario }}</p>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>Enviado em {{ avaliacao.data_criacao|date:"d/m/Y H:i" }}</small>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center mt-5">
+                        <i class="bi bi-chat-square-dots fs-1 text-muted d-block mb-3"></i>
+                        <p class="lead text-muted">Nenhum feedback ainda. Seja o primeiro a avaliar!</p>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+</html>

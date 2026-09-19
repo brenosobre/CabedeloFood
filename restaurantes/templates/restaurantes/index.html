@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CabedeloFood</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+        }
+        .titulo-site {
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+        
+        /* Estilos da Barra de Busca */
+        .form-control {
+            background-color: #1a1a2e !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+        .form-control:focus {
+            background-color: #16213e !important;
+            border-color: #ff4b2b !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 75, 43, 0.25) !important;
+        }
+        ::placeholder {
+            color: #a0a0b8 !important;
+            opacity: 0.7;
+        }
+
+        .card {
+            background-color: #24243e;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6) !important;
+            border-color: rgba(255, 75, 43, 0.5);
+        }
+        .card-body h5 { color: #ffffff; }
+        .text-muted, .card-subtitle { color: #a0a0b8 !important; }
+        .card-footer {
+            background-color: #1a1a2e !important;
+            border-top: 1px solid rgba(255,255,255,0.05) !important;
+        }
+        .bg-sem-imagem {
+            background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%) !important;
+            border-top-left-radius: 12px !important;
+            border-top-right-radius: 12px !important;
+        }
+        .btn-outline-danger {
+            color: #ff4b2b;
+            border-color: #ff4b2b;
+        }
+        .btn-outline-danger:hover {
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            border-color: transparent;
+            color: white;
+        }
+        footer {
+            background-color: #0f0f1a !important;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold fs-4 m-0" href="{% url 'home' %}"><i class="bi bi-shop me-2"></i>CabedeloFood</a>
+            <div class="d-flex">
+                <a href="{% url 'home' %}" class="btn btn-outline-light border-0 me-2 fw-bold"><i class="bi bi-house-door-fill me-1"></i>Início</a>
+                <a href="{% url 'ranking' %}" class="btn btn-warning fw-bold text-dark shadow-sm"><i class="bi bi-trophy-fill me-1"></i>Ranking</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5" style="min-height: 70vh;">
+        <h2 class="text-center mb-4 fw-bold titulo-site">Descubra os melhores sabores da cidade</h2>
+        
+        <!-- BARRA DE PESQUISA -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8 col-lg-6">
+                <form action="{% url 'home' %}" method="GET" class="d-flex">
+                    <!-- Se já estiver filtrando por categoria, mantém a categoria na busca -->
+                    {% if categoria_atual %}
+                        <input type="hidden" name="categoria" value="{{ categoria_atual }}">
+                    {% endif %}
+                    
+                    <div class="input-group shadow-sm">
+                        <input type="text" name="busca" class="form-control form-control-lg" placeholder="Buscar restaurante pelo nome..." value="{{ termo_busca|default:'' }}">
+                        <button type="submit" class="btn btn-danger px-4 fw-bold" style="background: linear-gradient(90deg, #ff416c, #ff4b2b); border: none;">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Botões de Filtro de Categoria -->
+        <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
+            <a href="{% url 'home' %}" class="btn {% if not categoria_atual %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4">
+                Todos
+            </a>
+            {% for cat in categorias %}
+                <a href="{% url 'home' %}?categoria={{ cat.nome }}{% if termo_busca %}&busca={{ termo_busca }}{% endif %}" class="btn {% if categoria_atual == cat.nome %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4">
+                    {{ cat.nome }}
+                </a>
+            {% endfor %}
+        </div>
+        
+        <div class="row">
+            {% for rest in restaurantes %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    
+                    {% if rest.imagem %}
+                        <img src="{{ rest.imagem.url }}" class="card-img-top" alt="Foto de {{ rest.nome }}" style="height: 220px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-sem-imagem text-white text-center py-5 rounded-top" style="height: 220px;">
+                            <span class="mt-4 d-block fw-semibold fs-1"><i class="bi bi-camera-video-off"></i></span>
+                            <span class="d-block fw-semibold mt-2">Sem Imagem</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h5 class="card-title fw-bold mb-0">{{ rest.nome }}</h5>
+                            {% if rest.categoria %}
+                                <span class="badge bg-danger rounded-pill">{{ rest.categoria.nome }}</span>
+                            {% endif %}
+                        </div>
+                        <h6 class="card-subtitle mb-3 text-muted mt-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}</h6>
+                        <p class="card-text" style="color: #c8c8d8;">{{ rest.descricao|truncatewords:15 }}</p>
+                    </div>
+                    
+                    <div class="card-footer pb-3">
+                        <div class="text-center mb-3">
+                            <small class="text-muted fw-semibold"><i class="bi bi-telephone-fill text-success me-1"></i>{{ rest.telefone }}</small>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            {% if rest.link_cardapio %}
+                                <a href="{{ rest.link_cardapio }}" target="_blank" class="btn btn-outline-danger btn-sm flex-fill fw-semibold"><i class="bi bi-journal-text me-1"></i>Cardápio</a>
+                            {% else %}
+                                <button class="btn btn-outline-secondary btn-sm flex-fill fw-semibold" disabled><i class="bi bi-journal-x me-1"></i>Sem Cardápio</button>
+                            {% endif %}
+                            
+                            {% if rest.instagram %}
+                                <a href="{{ rest.instagram }}" target="_blank" class="btn btn-outline-primary btn-sm flex-fill fw-semibold"><i class="bi bi-instagram me-1"></i>Insta</a>
+                            {% endif %}
+                            
+                            <a href="{% url 'avaliacoes' rest.id %}" class="btn btn-warning btn-sm flex-fill fw-bold text-dark"><i class="bi bi-star-fill me-1"></i>Feedback</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="lead text-muted mt-5"><i class="bi bi-search fs-1 d-block mb-3"></i>Nenhum restaurante encontrado com esses filtros.</p>
+                <!-- Botão para limpar a busca se não achar nada -->
+                <a href="{% url 'home' %}" class="btn btn-outline-light mt-3"><i class="bi bi-arrow-counterclockwise me-1"></i>Limpar Filtros</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0 fw-semibold">© 2026 CabedeloFood. Todos os direitos reservados.</p>
+            <small class="text-muted">Apoiando o comércio local.</small>
+        </div>
+    </footer>
+
+</body>
+</html>
