@@ -122,9 +122,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             
-            <!-- --- NOVO LOGÓTIPO PIN + HAMBÚRGUER --- -->
+            <!-- --- LOGÓTIPO PIN + HAMBÚRGUER --- -->
             <a class="navbar-brand m-0 d-flex align-items-center" href="{% url 'home' %}">
-                <!-- Ícone Pin -->
                 <svg width="32" height="38" viewBox="0 0 36 38" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
                     <defs>
                         <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -132,24 +131,15 @@
                             <stop offset="100%" stop-color="#ff4b2b" />
                         </linearGradient>
                     </defs>
-                    <!-- Fundo do Pin -->
                     <path d="M18 0C8.059 0 0 8.059 0 18C0 31.5 18 38 18 38C18 38 36 31.5 36 18C36 8.059 27.941 0 18 0Z" fill="url(#logo-grad)"/>
-                    
-                    <!-- Desenho do Hambúrguer a branco -->
-                    <!-- Pão superior -->
                     <path d="M12 15.5 C12 11, 24 11, 24 15.5 Z" fill="#ffffff"/>
-                    <!-- Carne do Hambúrguer -->
                     <rect x="11.5" y="17" width="13" height="2.5" rx="1.25" fill="#ffffff"/>
-                    <!-- Pão inferior -->
                     <path d="M12 20.5 C12 23.5, 24 23.5, 24 20.5 Z" fill="#ffffff"/>
                 </svg>
-                
-                <!-- Texto Perfeito em HTML/CSS -->
                 <span class="fs-4 fw-bold" style="letter-spacing: -0.5px;">
                     <span class="text-white">Cabedelo</span><span style="background: linear-gradient(90deg, #ff416c, #ff4b2b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Food</span>
                 </span>
             </a>
-            <!-- --- FIM DO LOGÓTIPO --- -->
 
             <div class="d-flex">
                 <a href="{% url 'home' %}" class="btn btn-outline-light border-0 me-2 fw-bold"><i class="bi bi-house-door-fill me-1"></i>Início</a>
@@ -212,7 +202,6 @@
                                     <span class="badge bg-danger rounded-pill">{{ rest.categoria.nome }}</span>
                                 {% endif %}
                                 
-                                <!-- --- ETIQUETA ABERTO/FECHADO --- -->
                                 {% if rest.esta_aberto is not None %}
                                     {% if rest.esta_aberto %}
                                         <span class="badge bg-success rounded-pill ms-1 shadow-sm"><i class="bi bi-clock-fill me-1"></i>Aberto</span>
@@ -220,7 +209,6 @@
                                         <span class="badge bg-secondary rounded-pill ms-1 shadow-sm"><i class="bi bi-clock me-1"></i>Fechado</span>
                                     {% endif %}
                                 {% endif %}
-                                <!-- --- FIM DA ETIQUETA --- -->
                             </div>
                         </div>
                         
@@ -314,5 +302,9 @@
             document.getElementById('lightbox').style.display = 'none';
         }
     </script>
+    
+    <!-- INTEGRAÇÃO DO CRISP CHAT -->
+    <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="dfc9e5e5-2c33-4c6a-9b63-647d35accf4c";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+
 </body>
 </html>
