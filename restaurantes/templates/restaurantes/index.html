@@ -26,7 +26,6 @@
             text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
         }
         
-        /* Estilos da Barra de Busca */
         .form-control {
             background-color: #1a1a2e !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -37,10 +36,7 @@
             border-color: #ff4b2b !important;
             box-shadow: 0 0 0 0.25rem rgba(255, 75, 43, 0.25) !important;
         }
-        ::placeholder {
-            color: #a0a0b8 !important;
-            opacity: 0.7;
-        }
+        ::placeholder { color: #a0a0b8 !important; opacity: 0.7; }
 
         .card {
             background-color: #24243e;
@@ -65,68 +61,52 @@
             border-top-left-radius: 12px !important;
             border-top-right-radius: 12px !important;
         }
-        .btn-outline-danger {
-            color: #ff4b2b;
-            border-color: #ff4b2b;
-        }
+        .btn-outline-danger { color: #ff4b2b; border-color: #ff4b2b; }
         .btn-outline-danger:hover {
             background: linear-gradient(90deg, #ff416c, #ff4b2b);
-            border-color: transparent;
-            color: white;
+            border-color: transparent; color: white;
         }
-        footer {
-            background-color: #0f0f1a !important;
-            border-top: 1px solid rgba(255,255,255,0.05);
+        footer { background-color: #0f0f1a !important; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* GALERIA DE FOTOS MINIATURAS */
+        .fotos-grid {
+            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; margin-top: 10px;
+            scrollbar-width: thin; scrollbar-color: #ff4b2b #1a1a2e;
+        }
+        .fotos-grid::-webkit-scrollbar { height: 6px; }
+        .fotos-grid::-webkit-scrollbar-track { background: #1a1a2e; border-radius: 4px; }
+        .fotos-grid::-webkit-scrollbar-thumb { background: #ff4b2b; border-radius: 4px; }
+        
+        .foto-card { flex: 0 0 auto; text-align: center; }
+        .foto-card img {
+            width: 70px; height: 70px; object-fit: cover; border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.2s ease;
+            cursor: pointer; /* <--- Mãozinha ao passar o rato */
+        }
+        .foto-card img:hover { transform: scale(1.05); border-color: #ff4b2b; }
+        .foto-card p {
+            font-size: 0.7rem; color: #a0a0b8; margin-top: 4px; margin-bottom: 0;
+            width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
-        /* --- NOVOS ESTILOS DA GALERIA DE FOTOS --- */
-        .fotos-grid {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-top: 10px;
-            scrollbar-width: thin; /* Para Firefox */
-            scrollbar-color: #ff4b2b #1a1a2e;
+        /* --- CSS DO LIGHTBOX (TELA CHEIA) --- */
+        #lightbox {
+            display: none; position: fixed; z-index: 9999; top: 0; left: 0; 
+            width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85);
+            justify-content: center; align-items: center; flex-direction: column;
+            backdrop-filter: blur(5px); cursor: pointer;
         }
-        /* Personalização da scrollbar para Chrome/Edge/Safari */
-        .fotos-grid::-webkit-scrollbar {
-            height: 6px;
+        #lightbox img {
+            max-width: 90%; max-height: 80vh; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); object-fit: contain;
         }
-        .fotos-grid::-webkit-scrollbar-track {
-            background: #1a1a2e;
-            border-radius: 4px;
+        #lightbox p { color: white; margin-top: 15px; font-size: 1.2rem; font-weight: 600; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .fechar-lightbox {
+            position: absolute; top: 20px; right: 30px;
+            color: white; font-size: 40px; font-weight: bold; cursor: pointer;
+            transition: color 0.2s;
         }
-        .fotos-grid::-webkit-scrollbar-thumb {
-            background: #ff4b2b;
-            border-radius: 4px;
-        }
-        .foto-card {
-            flex: 0 0 auto;
-            text-align: center;
-        }
-        .foto-card img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.2s ease;
-        }
-        .foto-card img:hover {
-            transform: scale(1.05);
-            border-color: #ff4b2b;
-        }
-        .foto-card p {
-            font-size: 0.7rem;
-            color: #a0a0b8;
-            margin-top: 4px;
-            margin-bottom: 0;
-            width: 70px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .fechar-lightbox:hover { color: #ff4b2b; }
     </style>
 </head>
 <body>
@@ -144,7 +124,6 @@
     <div class="container mt-5" style="min-height: 70vh;">
         <h2 class="text-center mb-4 fw-bold titulo-site">Descubra os melhores sabores da cidade</h2>
         
-        <!-- BARRA DE PESQUISA -->
         <div class="row justify-content-center mb-4">
             <div class="col-md-8 col-lg-6">
                 <form action="{% url 'home' %}" method="GET" class="d-flex">
@@ -162,7 +141,6 @@
             </div>
         </div>
 
-        <!-- Botões de Filtro de Categoria -->
         <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
             <a href="{% url 'home' %}" class="btn {% if not categoria_atual %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4">
                 Todos
@@ -198,14 +176,14 @@
                         <h6 class="card-subtitle mb-3 text-muted mt-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}</h6>
                         <p class="card-text" style="color: #c8c8d8;">{{ rest.descricao|truncatewords:15 }}</p>
                         
-                        <!-- --- INÍCIO DA GALERIA DE FOTOS --- -->
                         {% if rest.fotos.all %}
                             <hr style="border-color: rgba(255,255,255,0.1);">
                             <h6 class="text-white-50" style="font-size: 0.85rem;"><i class="bi bi-images me-1"></i>Galeria do Local</h6>
                             <div class="fotos-grid">
                                 {% for foto in rest.fotos.all %}
                                     <div class="foto-card">
-                                        <img src="{{ foto.imagem.url }}" alt="{{ foto.legenda|default:'Foto' }}" title="{{ foto.legenda|default:'Foto' }}">
+                                        <!-- O "onclick" ativa o Lightbox enviando a URL e a legenda da foto -->
+                                        <img src="{{ foto.imagem.url }}" alt="{{ foto.legenda|default:'Foto' }}" title="{{ foto.legenda|default:'Clique para ampliar' }}" onclick="abrirLightbox('{{ foto.imagem.url }}', '{{ foto.legenda|escapejs }}')">
                                         {% if foto.legenda %}
                                             <p title="{{ foto.legenda }}">{{ foto.legenda }}</p>
                                         {% endif %}
@@ -213,7 +191,6 @@
                                 {% endfor %}
                             </div>
                         {% endif %}
-                        <!-- --- FIM DA GALERIA DE FOTOS --- -->
 
                     </div>
                     
@@ -246,6 +223,13 @@
         </div>
     </div>
 
+    <!-- --- ESTRUTURA DO LIGHTBOX (Escondida por padrão) --- -->
+    <div id="lightbox" onclick="fecharLightbox()">
+        <span class="fechar-lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="Foto Ampliada">
+        <p id="lightbox-legenda"></p>
+    </div>
+
     <footer class="text-white text-center py-4 mt-5">
         <div class="container">
             <p class="mb-0 fw-semibold">© 2026 CabedeloFood. Todos os direitos reservados.</p>
@@ -253,5 +237,20 @@
         </div>
     </footer>
 
+    <!-- --- JAVASCRIPT DO LIGHTBOX --- -->
+    <script>
+        function abrirLightbox(urlImagem, textoLegenda) {
+            // Define a imagem e a legenda
+            document.getElementById('lightbox-img').src = urlImagem;
+            document.getElementById('lightbox-legenda').innerText = textoLegenda || '';
+            // Mostra o ecrã escuro
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function fecharLightbox() {
+            // Esconde o ecrã escuro ao clicar em qualquer lugar
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
