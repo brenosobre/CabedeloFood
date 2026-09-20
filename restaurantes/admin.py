@@ -1,14 +1,18 @@
 from django.contrib import admin
-from .models import Restaurante, Avaliacao, Categoria, FotoRestaurante
-
-class FotoRestauranteInline(admin.TabularInline):
-    model = FotoRestaurante
-    extra = 3  # Mostra 3 espaços para adicionar fotos
+from .models import Categoria, Restaurante, Avaliacao, FotoRestaurante
 
 class RestauranteAdmin(admin.ModelAdmin):
-    inlines = [FotoRestauranteInline]
+    # O que aparece como colunas na lista principal do painel
+    list_display = ('nome', 'categoria', 'hora_abertura', 'hora_fecho')
+    
+    # Cria um menu lateral para filtrar facilmente
+    list_filter = ('categoria',)
+    
+    # Adiciona uma barra de pesquisa
+    search_fields = ('nome', 'endereco')
 
-# Registos no painel de administração
+# Registar os modelos para aparecerem no Django Admin
 admin.site.register(Categoria)
+admin.site.register(Restaurante, RestauranteAdmin)
 admin.site.register(Avaliacao)
-admin.site.register(Restaurante, RestauranteAdmin)  # O Restaurante agora usa a classe com as fotos
+admin.site.register(FotoRestaurante)
