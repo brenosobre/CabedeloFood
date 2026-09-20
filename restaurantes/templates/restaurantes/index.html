@@ -81,7 +81,7 @@
         .foto-card img {
             width: 70px; height: 70px; object-fit: cover; border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.2s ease;
-            cursor: pointer; /* <--- Mãozinha ao passar o rato */
+            cursor: pointer;
         }
         .foto-card img:hover { transform: scale(1.05); border-color: #ff4b2b; }
         .foto-card p {
@@ -173,6 +173,19 @@
                                 <span class="badge bg-danger rounded-pill">{{ rest.categoria.nome }}</span>
                             {% endif %}
                         </div>
+                        
+                        <!-- --- INÍCIO DAS ESTRELAS --- -->
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            {% if rest.media_estrelas > 0 %}
+                                <span class="fw-bold text-white">{{ rest.media_estrelas }}</span>
+                                <span class="text-muted ms-1" style="font-size: 0.8rem;">/ 5</span>
+                            {% else %}
+                                <span class="text-muted" style="font-size: 0.85rem;">Novo (Sem avaliações)</span>
+                            {% endif %}
+                        </div>
+                        <!-- --- FIM DAS ESTRELAS --- -->
+
                         <h6 class="card-subtitle mb-3 text-muted mt-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}</h6>
                         <p class="card-text" style="color: #c8c8d8;">{{ rest.descricao|truncatewords:15 }}</p>
                         
@@ -182,7 +195,6 @@
                             <div class="fotos-grid">
                                 {% for foto in rest.fotos.all %}
                                     <div class="foto-card">
-                                        <!-- O "onclick" ativa o Lightbox enviando a URL e a legenda da foto -->
                                         <img src="{{ foto.imagem.url }}" alt="{{ foto.legenda|default:'Foto' }}" title="{{ foto.legenda|default:'Clique para ampliar' }}" onclick="abrirLightbox('{{ foto.imagem.url }}', '{{ foto.legenda|escapejs }}')">
                                         {% if foto.legenda %}
                                             <p title="{{ foto.legenda }}">{{ foto.legenda }}</p>
@@ -223,7 +235,6 @@
         </div>
     </div>
 
-    <!-- --- ESTRUTURA DO LIGHTBOX (Escondida por padrão) --- -->
     <div id="lightbox" onclick="fecharLightbox()">
         <span class="fechar-lightbox">&times;</span>
         <img id="lightbox-img" src="" alt="Foto Ampliada">
@@ -237,18 +248,14 @@
         </div>
     </footer>
 
-    <!-- --- JAVASCRIPT DO LIGHTBOX --- -->
     <script>
         function abrirLightbox(urlImagem, textoLegenda) {
-            // Define a imagem e a legenda
             document.getElementById('lightbox-img').src = urlImagem;
             document.getElementById('lightbox-legenda').innerText = textoLegenda || '';
-            // Mostra o ecrã escuro
             document.getElementById('lightbox').style.display = 'flex';
         }
 
         function fecharLightbox() {
-            // Esconde o ecrã escuro ao clicar em qualquer lugar
             document.getElementById('lightbox').style.display = 'none';
         }
     </script>

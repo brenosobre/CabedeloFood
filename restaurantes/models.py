@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=50)
@@ -19,6 +20,13 @@ class Restaurante(models.Model):
     # NOVOS CAMPOS PARA O MAPA (Latitude e Longitude)
     latitude = models.FloatField(help_text="Ex: -6.9811", blank=True, null=True)
     longitude = models.FloatField(help_text="Ex: -34.8339", blank=True, null=True)
+    
+    def media_estrelas(self):
+        # Calcula a média das estrelas baseada nas avaliações
+        media = self.avaliacoes.aggregate(Avg('estrelas'))['estrelas__avg']
+        if media is not None:
+            return round(media, 1)
+        return 0
     
     def __str__(self):
         return self.nome
