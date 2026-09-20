@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Avg
+from django.utils import timezone
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=50)
@@ -17,9 +18,13 @@ class Restaurante(models.Model):
     link_cardapio = models.URLField(max_length=500, blank=True, null=True)
     instagram = models.URLField(max_length=500, blank=True, null=True)
     
-    # NOVOS CAMPOS PARA O MAPA (Latitude e Longitude)
+    # CAMPOS DO MAPA
     latitude = models.FloatField(help_text="Ex: -6.9811", blank=True, null=True)
     longitude = models.FloatField(help_text="Ex: -34.8339", blank=True, null=True)
+    
+    # NOVOS CAMPOS DE HORÁRIO
+    hora_abertura = models.TimeField(blank=True, null=True, help_text="Ex: 18:00")
+    hora_fecho = models.TimeField(blank=True, null=True, help_text="Ex: 23:30")
     
     def media_estrelas(self):
         # Calcula a média das estrelas baseada nas avaliações
@@ -27,6 +32,22 @@ class Restaurante(models.Model):
         if media is not None:
             return round(media, 1)
         return 0
+        
+    def esta_aberto(self):
+        # Retorna None se o horário não for preenchido (não mostra a etiqueta)
+        if self.hora_abertura is None or self.hora_fecho is None:
+            return None 
+            
+        # Pega na hora atual respeitando o fuso horário (TIME_ZONE do settings.py)
+        agora = timezone.localtime(timezone.now()).time()
+        
+        # Lógica normal (ex: abre às 08:00 e fecha às 18:00)
+        if self.hora_abertura <= self.hora_fecho:
+            return self.hora_abertura <= agora <= self.hora_fecho
+            
+        # Lógica para madrugadas (ex: abre às 18:00 e fecha às 02:00)
+        else:
+            return agora >= self.hora_abertura or agora <= self.hora_fecho
     
     def __str__(self):
         return self.nome
