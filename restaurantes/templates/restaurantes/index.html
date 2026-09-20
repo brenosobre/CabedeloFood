@@ -18,7 +18,7 @@
             min-height: 100vh;
         }
         .navbar-custom {
-            background: linear-gradient(90deg, #16213e 0%, #1a1a2e 100%); /* Fundo escuro para destacar o logo e botões */
+            background: linear-gradient(90deg, #16213e 0%, #1a1a2e 100%);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             border-bottom: 2px solid #ff416c;
         }
@@ -122,23 +122,32 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             
-            <!-- --- NOVO LOGÓTIPO --- -->
-            <a class="navbar-brand m-0" href="{% url 'home' %}" style="display: flex; align-items: center;">
-                <svg width="220" height="40" viewBox="0 0 220 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- --- NOVO LOGÓTIPO PIN + HAMBÚRGUER --- -->
+            <a class="navbar-brand m-0 d-flex align-items-center" href="{% url 'home' %}">
+                <!-- Ícone Pin -->
+                <svg width="32" height="38" viewBox="0 0 36 38" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
                     <defs>
-                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stop-color="#ff416c" />
                             <stop offset="100%" stop-color="#ff4b2b" />
                         </linearGradient>
                     </defs>
-                    <g transform="translate(0, 2)">
-                        <path d="M18 0C8.059 0 0 8.059 0 18C0 31.5 18 38 18 38C18 38 36 31.5 36 18C36 8.059 27.941 0 18 0ZM18 24C14.686 24 12 21.314 12 18C12 14.686 14.686 12 18 12C21.314 12 24 14.686 24 18C24 21.314 21.314 24 18 24Z" fill="url(#logo-grad)"/>
-                        <text x="18" y="22" font-family="'Poppins', sans-serif" font-weight="900" font-size="12" fill="url(#logo-grad)" text-anchor="middle">CF</text>
-                    </g>
-                    <text x="45" y="27" font-family="'Poppins', sans-serif" font-weight="700" font-size="24" fill="#ffffff" letter-spacing="-0.5">
-                        Cabedelo<tspan fill="url(#logo-grad)">Food</tspan>
-                    </text>
+                    <!-- Fundo do Pin -->
+                    <path d="M18 0C8.059 0 0 8.059 0 18C0 31.5 18 38 18 38C18 38 36 31.5 36 18C36 8.059 27.941 0 18 0Z" fill="url(#logo-grad)"/>
+                    
+                    <!-- Desenho do Hambúrguer a branco -->
+                    <!-- Pão superior -->
+                    <path d="M12 15.5 C12 11, 24 11, 24 15.5 Z" fill="#ffffff"/>
+                    <!-- Carne do Hambúrguer -->
+                    <rect x="11.5" y="17" width="13" height="2.5" rx="1.25" fill="#ffffff"/>
+                    <!-- Pão inferior -->
+                    <path d="M12 20.5 C12 23.5, 24 23.5, 24 20.5 Z" fill="#ffffff"/>
                 </svg>
+                
+                <!-- Texto Perfeito em HTML/CSS -->
+                <span class="fs-4 fw-bold" style="letter-spacing: -0.5px;">
+                    <span class="text-white">Cabedelo</span><span style="background: linear-gradient(90deg, #ff416c, #ff4b2b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Food</span>
+                </span>
             </a>
             <!-- --- FIM DO LOGÓTIPO --- -->
 
