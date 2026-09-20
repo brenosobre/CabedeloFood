@@ -89,7 +89,7 @@
             width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
-        /* --- CSS DO LIGHTBOX (TELA CHEIA) --- */
+        /* --- CSS DO LIGHTBOX E DO LINK DE ENDEREÇO --- */
         #lightbox {
             display: none; position: fixed; z-index: 9999; top: 0; left: 0; 
             width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85);
@@ -107,6 +107,13 @@
             transition: color 0.2s;
         }
         .fechar-lightbox:hover { color: #ff4b2b; }
+        
+        .endereco-link {
+            transition: color 0.2s ease;
+        }
+        .endereco-link:hover {
+            color: #ff4b2b !important;
+        }
     </style>
 </head>
 <body>
@@ -174,7 +181,6 @@
                             {% endif %}
                         </div>
                         
-                        <!-- --- INÍCIO DAS ESTRELAS --- -->
                         <div class="d-flex align-items-center mb-2">
                             <i class="bi bi-star-fill text-warning me-1"></i>
                             {% if rest.media_estrelas > 0 %}
@@ -184,9 +190,13 @@
                                 <span class="text-muted" style="font-size: 0.85rem;">Novo (Sem avaliações)</span>
                             {% endif %}
                         </div>
-                        <!-- --- FIM DAS ESTRELAS --- -->
 
-                        <h6 class="card-subtitle mb-3 text-muted mt-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}</h6>
+                        <!-- --- NOVO LINK DIRETO PARA O GOOGLE MAPS --- -->
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ rest.endereco|urlencode }}+Cabedelo+PB" target="_blank" class="text-decoration-none text-muted card-subtitle d-block mb-3 mt-2 endereco-link">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }} <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.7rem;"></i>
+                        </a>
+                        <!-- --- FIM DO LINK PARA MAPAS --- -->
+
                         <p class="card-text" style="color: #c8c8d8;">{{ rest.descricao|truncatewords:15 }}</p>
                         
                         {% if rest.fotos.all %}
@@ -207,8 +217,6 @@
                     </div>
                     
                     <div class="card-footer pb-3">
-                        
-                        <!-- --- NOVO BOTÃO DO WHATSAPP --- -->
                         <div class="mb-3">
                             <a href="https://wa.me/55{{ rest.telefone|cut:' '|cut:'-'|cut:'('|cut:')' }}?text=Olá! Vi o restaurante {{ rest.nome }} no CabedeloFood e gostaria de saber mais." 
                                target="_blank" 
@@ -217,7 +225,6 @@
                                 <i class="bi bi-whatsapp me-2"></i>Pedir no WhatsApp
                             </a>
                         </div>
-                        <!-- --- FIM DO BOTÃO DO WHATSAPP --- -->
 
                         <div class="d-flex gap-2 flex-wrap">
                             {% if rest.link_cardapio %}
