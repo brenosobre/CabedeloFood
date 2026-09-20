@@ -78,6 +78,55 @@
             background-color: #0f0f1a !important;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
+
+        /* --- NOVOS ESTILOS DA GALERIA DE FOTOS --- */
+        .fotos-grid {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-top: 10px;
+            scrollbar-width: thin; /* Para Firefox */
+            scrollbar-color: #ff4b2b #1a1a2e;
+        }
+        /* Personalização da scrollbar para Chrome/Edge/Safari */
+        .fotos-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+        .fotos-grid::-webkit-scrollbar-track {
+            background: #1a1a2e;
+            border-radius: 4px;
+        }
+        .fotos-grid::-webkit-scrollbar-thumb {
+            background: #ff4b2b;
+            border-radius: 4px;
+        }
+        .foto-card {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+        .foto-card img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease;
+        }
+        .foto-card img:hover {
+            transform: scale(1.05);
+            border-color: #ff4b2b;
+        }
+        .foto-card p {
+            font-size: 0.7rem;
+            color: #a0a0b8;
+            margin-top: 4px;
+            margin-bottom: 0;
+            width: 70px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
@@ -99,7 +148,6 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-8 col-lg-6">
                 <form action="{% url 'home' %}" method="GET" class="d-flex">
-                    <!-- Se já estiver filtrando por categoria, mantém a categoria na busca -->
                     {% if categoria_atual %}
                         <input type="hidden" name="categoria" value="{{ categoria_atual }}">
                     {% endif %}
@@ -149,6 +197,24 @@
                         </div>
                         <h6 class="card-subtitle mb-3 text-muted mt-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}</h6>
                         <p class="card-text" style="color: #c8c8d8;">{{ rest.descricao|truncatewords:15 }}</p>
+                        
+                        <!-- --- INÍCIO DA GALERIA DE FOTOS --- -->
+                        {% if rest.fotos.all %}
+                            <hr style="border-color: rgba(255,255,255,0.1);">
+                            <h6 class="text-white-50" style="font-size: 0.85rem;"><i class="bi bi-images me-1"></i>Galeria do Local</h6>
+                            <div class="fotos-grid">
+                                {% for foto in rest.fotos.all %}
+                                    <div class="foto-card">
+                                        <img src="{{ foto.imagem.url }}" alt="{{ foto.legenda|default:'Foto' }}" title="{{ foto.legenda|default:'Foto' }}">
+                                        {% if foto.legenda %}
+                                            <p title="{{ foto.legenda }}">{{ foto.legenda }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <!-- --- FIM DA GALERIA DE FOTOS --- -->
+
                     </div>
                     
                     <div class="card-footer pb-3">
@@ -174,7 +240,6 @@
             {% empty %}
             <div class="col-12 text-center">
                 <p class="lead text-muted mt-5"><i class="bi bi-search fs-1 d-block mb-3"></i>Nenhum restaurante encontrado com esses filtros.</p>
-                <!-- Botão para limpar a busca se não achar nada -->
                 <a href="{% url 'home' %}" class="btn btn-outline-light mt-3"><i class="bi bi-arrow-counterclockwise me-1"></i>Limpar Filtros</a>
             </div>
             {% endfor %}
