@@ -6,6 +6,8 @@
     <title>Ranking - CabedeloFood</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -19,19 +21,40 @@
             background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
             box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
         }
-        .rank-card {
+        .titulo-site {
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+        .card {
             background-color: #24243e;
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            transition: transform 0.2s ease;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
-        .rank-card:hover {
-            transform: scale(1.02);
-            border-color: #ffd700;
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 75, 43, 0.5);
         }
-        .medalha-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); } /* Ouro */
-        .medalha-2 { color: #c0c0c0; } /* Prata */
-        .medalha-3 { color: #cd7f32; } /* Bronze */
+        .posicao-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .badge-1 { background: linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%); color: white; }
+        .badge-2 { background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%); color: white; }
+        .badge-3 { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); color: white; }
+        .badge-outros { background-color: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.2); }
+        
+        .card-footer { background-color: #1a1a2e !important; border-top: 1px solid rgba(255,255,255,0.05) !important; }
+        footer { background-color: #0f0f1a !important; border-top: 1px solid rgba(255,255,255,0.05); }
+        .endereco-link:hover { color: #ff4b2b !important; }
     </style>
 </head>
 <body>
@@ -46,61 +69,97 @@
         </div>
     </nav>
 
-    <div class="container mt-5" style="max-width: 800px;">
+    <div class="container mt-5" style="min-height: 70vh;">
         <div class="text-center mb-5">
-            <i class="bi bi-trophy text-warning" style="font-size: 4rem;"></i>
-            <h2 class="fw-bold mt-2">Top Melhores Avaliados</h2>
-            <p class="text-muted" style="color: #a0a0b8 !important;">Os restaurantes preferidos da galera!</p>
+            <h2 class="fw-bold titulo-site"><i class="bi bi-trophy text-warning me-2"></i>Ranking dos Melhores</h2>
+            <p class="text-muted">Os estabelecimentos mais bem avaliados pelos clientes em Cabedelo.</p>
         </div>
-        
-        <div class="list-group">
+
+        <div class="row">
             {% for rest in restaurantes %}
-                <div class="rank-card d-flex align-items-center p-3 mb-3 shadow-sm">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm position-relative">
                     
-                    <!-- Posição no Ranking com Ícones Especiais -->
-                    <div class="px-3 text-center" style="width: 80px;">
-                        {% if forloop.counter == 1 %}
-                            <i class="bi bi-trophy-fill fs-2 medalha-1 d-block"></i>
-                        {% elif forloop.counter == 2 %}
-                            <i class="bi bi-award-fill fs-2 medalha-2 d-block"></i>
-                        {% elif forloop.counter == 3 %}
-                            <i class="bi bi-award-fill fs-2 medalha-3 d-block"></i>
-                        {% else %}
-                            <span class="fs-4 fw-bold text-muted">{{ forloop.counter }}º</span>
-                        {% endif %}
-                    </div>
+                    <!-- Insígnia da Posição no Ranking -->
+                    {% if forloop.counter == 1 %}
+                        <span class="posicao-badge badge-1"><i class="bi bi-award-fill me-1"></i> 1º Lugar</span>
+                    {% elif forloop.counter == 2 %}
+                        <span class="posicao-badge badge-2">2º Lugar</span>
+                    {% elif forloop.counter == 3 %}
+                        <span class="posicao-badge badge-3">3º Lugar</span>
+                    {% else %}
+                        <span class="posicao-badge badge-outros">{{ forloop.counter }}º</span>
+                    {% endif %}
 
-                    <!-- Imagem Redonda do Restaurante -->
-                    <div class="me-3">
-                        {% if rest.imagem %}
-                            <img src="{{ rest.imagem.url }}" alt="{{ rest.nome }}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1);">
-                        {% else %}
-                            <div class="d-flex justify-content-center align-items-center" style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);">
-                                <i class="bi bi-shop fs-3"></i>
-                            </div>
-                        {% endif %}
-                    </div>
+                    {% if rest.imagem %}
+                        <img src="{{ rest.imagem.url }}" class="card-img-top" alt="Foto de {{ rest.nome }}" style="height: 220px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white text-center py-5 rounded-top" style="height: 220px;">
+                            <span class="mt-4 d-block fw-semibold fs-1"><i class="bi bi-camera-video-off"></i></span>
+                            <span class="d-block fw-semibold mt-2">Sem Imagem</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h5 class="card-title fw-bold mb-0">{{ rest.nome }}</h5>
+                            {% if rest.categoria %}
+                                <span class="badge bg-danger rounded-pill">{{ rest.categoria.nome }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            {% if rest.media_estrelas > 0 %}
+                                <span class="fw-bold text-white fs-5">{{ rest.media_estrelas }}</span>
+                                <span class="text-muted ms-1" style="font-size: 0.8rem;">/ 5</span>
+                            {% else %}
+                                <span class="text-muted" style="font-size: 0.85rem;">Novo (Sem avaliações)</span>
+                            {% endif %}
+                        </div>
 
-                    <!-- Informações -->
-                    <div class="flex-grow-1">
-                        <h4 class="mb-0 fw-bold">{{ rest.nome }}</h4>
-                        <small style="color: #a0a0b8;"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}</small>
-                    </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ rest.endereco|urlencode }}+Cabedelo+PB" target="_blank" class="text-decoration-none text-muted card-subtitle d-block mb-3 mt-2 endereco-link">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }} <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.7rem;"></i>
+                        </a>
 
-                    <!-- Nota Média -->
-                    <div class="text-end px-3">
-                        <span class="fs-4 fw-bold text-warning d-block"><i class="bi bi-star-fill me-1"></i>{{ rest.media_estrelas|floatformat:1 }}</span>
-                        <a href="{% url 'avaliacoes' rest.id %}" class="btn btn-outline-light btn-sm mt-1">Ver Feedbacks</a>
+                        <p class="card-text" style="color: #c8c8d8;" class="mb-0">{{ rest.descricao|truncatewords:12 }}</p>
                     </div>
+                    
+                    <div class="card-footer pb-3">
+                        <div class="mb-3">
+                            <a href="https://wa.me/55{{ rest.telefone|cut:' '|cut:'-'|cut:'('|cut:')' }}?text=Olá! Vi o restaurante {{ rest.nome }} no topo do CabedeloFood e gostaria de pedir algo." 
+                               target="_blank" 
+                               class="btn w-100 fw-bold shadow-sm text-white" 
+                               style="background-color: #25D366; border-color: #25D366;">
+                                <i class="bi bi-whatsapp me-2"></i>Pedir no WhatsApp
+                            </a>
+                        </div>
 
+                        <div class="d-flex gap-2 flex-wrap">
+                            {% if rest.link_cardapio %}
+                                <a href="{{ rest.link_cardapio }}" target="_blank" class="btn btn-outline-danger btn-sm flex-fill fw-semibold"><i class="bi bi-journal-text me-1"></i>Cardápio</a>
+                            {% endif %}
+                            {% if rest.instagram %}
+                                <a href="{{ rest.instagram }}" target="_blank" class="btn btn-outline-primary btn-sm flex-fill fw-semibold"><i class="bi bi-instagram me-1"></i>Insta</a>
+                            {% endif %}
+                            <a href="{% url 'avaliacoes' rest.id %}" class="btn btn-warning btn-sm flex-fill fw-bold text-dark"><i class="bi bi-star-fill me-1"></i>Feedback</a>
+                        </div>
+                    </div>
                 </div>
+            </div>
             {% empty %}
-                <div class="text-center mt-5">
-                    <p class="lead text-muted">Ninguém foi avaliado ainda. Corra e deixe o primeiro feedback!</p>
-                </div>
+            <div class="col-12 text-center">
+                <p class="lead text-muted mt-5"><i class="bi bi-trophy fs-1 d-block mb-3"></i>Ainda não há restaurantes registados para exibir no ranking.</p>
+            </div>
             {% endfor %}
         </div>
     </div>
+
+    <footer class="text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0 fw-semibold">© 2026 CabedeloFood. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
