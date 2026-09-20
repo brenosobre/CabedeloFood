@@ -122,7 +122,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             
-            <!-- --- LOGÓTIPO PIN + HAMBÚRGUER --- -->
+            <!-- LOGÓTIPO PIN + HAMBÚRGUER -->
             <a class="navbar-brand m-0 d-flex align-items-center" href="{% url 'home' %}">
                 <svg width="32" height="38" viewBox="0 0 36 38" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
                     <defs>
@@ -168,12 +168,29 @@
             </div>
         </div>
 
+        <!-- FILTROS DE CATEGORIA COM ÍCONES DINÂMICOS -->
         <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
-            <a href="{% url 'home' %}" class="btn {% if not categoria_atual %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4">
-                Todos
+            <a href="{% url 'home' %}" class="btn {% if not categoria_atual %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4 shadow-sm">
+                <i class="bi bi-grid-fill me-1"></i> Todos
             </a>
+            
             {% for cat in categorias %}
-                <a href="{% url 'home' %}?categoria={{ cat.nome }}{% if termo_busca %}&busca={{ termo_busca }}{% endif %}" class="btn {% if categoria_atual == cat.nome %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4">
+                <a href="{% url 'home' %}?categoria={{ cat.nome }}{% if termo_busca %}&busca={{ termo_busca }}{% endif %}" class="btn {% if categoria_atual == cat.nome %}btn-warning fw-bold text-dark{% else %}btn-outline-light{% endif %} rounded-pill px-4 shadow-sm">
+                    
+                    {% if "lanche" in cat.nome|lower or "burger" in cat.nome|lower or "hamburguer" in cat.nome|lower %}
+                        <i class="bi bi-fire me-1"></i>
+                    {% elif "pizza" in cat.nome|lower %}
+                        <i class="bi bi-pie-chart-fill me-1"></i>
+                    {% elif "japa" in cat.nome|lower or "sushi" in cat.nome|lower or "oriental" in cat.nome|lower %}
+                        <i class="bi bi-tsunami me-1"></i>
+                    {% elif "bebida" in cat.nome|lower or "bar" in cat.nome|lower or "cerveja" in cat.nome|lower %}
+                        <i class="bi bi-cup-straw me-1"></i>
+                    {% elif "doce" in cat.nome|lower or "sobremesa" in cat.nome|lower or "açaí" in cat.nome|lower %}
+                        <i class="bi bi-heart-fill me-1"></i>
+                    {% else %}
+                        <i class="bi bi-shop me-1"></i>
+                    {% endif %}
+                    
                     {{ cat.nome }}
                 </a>
             {% endfor %}

@@ -9,20 +9,20 @@ def home(request):
     categoria_filtro = request.GET.get('categoria')
     termo_busca = request.GET.get('busca') 
     
-    todas_categorias = Categoria.objects.all()
-    lista_restaurantes = Restaurante.objects.all()
+    categorias = Categoria.objects.all()
+    restaurantes = Restaurante.objects.all()
 
     # Filtra pelo nome se o utilizador pesquisou algo
     if termo_busca:
-        lista_restaurantes = lista_restaurantes.filter(nome__icontains=termo_busca)
+        restaurantes = restaurantes.filter(nome__icontains=termo_busca)
 
     # Filtra pela categoria se o utilizador clicou numa
     if categoria_filtro:
-        lista_restaurantes = lista_restaurantes.filter(categoria__nome=categoria_filtro)
+        restaurantes = restaurantes.filter(categoria__nome=categoria_filtro)
 
     return render(request, 'restaurantes/index.html', {
-        'restaurantes': lista_restaurantes,
-        'categorias': todas_categorias,
+        'restaurantes': restaurantes,
+        'categorias': categorias,
         'categoria_atual': categoria_filtro,
         'termo_busca': termo_busca 
     })
