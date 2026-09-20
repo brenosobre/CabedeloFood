@@ -207,9 +207,18 @@
                     </div>
                     
                     <div class="card-footer pb-3">
-                        <div class="text-center mb-3">
-                            <small class="text-muted fw-semibold"><i class="bi bi-telephone-fill text-success me-1"></i>{{ rest.telefone }}</small>
+                        
+                        <!-- --- NOVO BOTÃO DO WHATSAPP --- -->
+                        <div class="mb-3">
+                            <a href="https://wa.me/55{{ rest.telefone|cut:' '|cut:'-'|cut:'('|cut:')' }}?text=Olá! Vi o restaurante {{ rest.nome }} no CabedeloFood e gostaria de saber mais." 
+                               target="_blank" 
+                               class="btn w-100 fw-bold shadow-sm text-white" 
+                               style="background-color: #25D366; border-color: #25D366; transition: transform 0.2s;">
+                                <i class="bi bi-whatsapp me-2"></i>Pedir no WhatsApp
+                            </a>
                         </div>
+                        <!-- --- FIM DO BOTÃO DO WHATSAPP --- -->
+
                         <div class="d-flex gap-2 flex-wrap">
                             {% if rest.link_cardapio %}
                                 <a href="{{ rest.link_cardapio }}" target="_blank" class="btn btn-outline-danger btn-sm flex-fill fw-semibold"><i class="bi bi-journal-text me-1"></i>Cardápio</a>
