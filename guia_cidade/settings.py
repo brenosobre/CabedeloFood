@@ -16,7 +16,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Definição dos Aplicativos
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,7 +58,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'guia_cidade.wsgi.application'
 
-
 # Banco de dados configurado para ambiente local (SQLite) e compatível com nuvem
 DATABASES = {
     'default': dj_database_url.config(
@@ -67,7 +65,6 @@ DATABASES = {
         conn_max_age=600
     )
 }
-
 
 # Validação de Senhas
 AUTH_PASSWORD_VALIDATORS = [
@@ -85,7 +82,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internacionalização
 LANGUAGE_CODE = 'pt-br'
 
@@ -95,19 +91,16 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Arquivos Estáticos (CSS, JavaScript, Imagens do sistema)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
 # Tipo de campo automático padrão
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # --- CONFIGURAÇÕES DE UPLOAD DE IMAGENS ---
 # URL usada para acessar as imagens no navegador
 MEDIA_URL = '/media/'
 
 # Pasta física no seu computador onde as imagens serão salvas
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    

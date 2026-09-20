@@ -33,3 +33,11 @@ class Avaliacao(models.Model):
     
     def __str__(self):
         return f"{self.autor} - {self.estrelas} Estrelas para {self.restaurante.nome}"
+
+class FotoRestaurante(models.Model):
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, related_name='fotos', verbose_name="Restaurante")
+    imagem = models.ImageField(upload_to='restaurantes/galeria/', verbose_name="Imagem")
+    legenda = models.CharField(max_length=100, blank=True, null=True, verbose_name="Legenda/Prato")
+
+    def __str__(self):
+        return f"Foto de {self.restaurante} - {self.legenda or 'Sem legenda'}"
