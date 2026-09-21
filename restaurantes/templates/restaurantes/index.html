@@ -51,7 +51,7 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.6) !important;
             border-color: rgba(255, 75, 43, 0.5);
         }
-        .card-body h5 { color: #ffffff; }
+        .card-body h5 { color: #ffffff; font-size: 1.1rem; }
         .text-muted, .card-subtitle { color: #a0a0b8 !important; }
         .card-footer {
             background-color: #1a1a2e !important;
@@ -71,7 +71,7 @@
 
         /* GALERIA DE FOTOS MINIATURAS */
         .fotos-grid {
-            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; margin-top: 10px;
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-top: 10px;
             scrollbar-width: thin; scrollbar-color: #ff4b2b #1a1a2e;
         }
         .fotos-grid::-webkit-scrollbar { height: 6px; }
@@ -80,14 +80,14 @@
         
         .foto-card { flex: 0 0 auto; text-align: center; }
         .foto-card img {
-            width: 70px; height: 70px; object-fit: cover; border-radius: 8px;
+            width: 60px; height: 60px; object-fit: cover; border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.2s ease;
             cursor: pointer;
         }
         .foto-card img:hover { transform: scale(1.05); border-color: #ff4b2b; }
         .foto-card p {
-            font-size: 0.7rem; color: #a0a0b8; margin-top: 4px; margin-bottom: 0;
-            width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.65rem; color: #a0a0b8; margin-top: 4px; margin-bottom: 0;
+            width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
         /* --- CSS DO LIGHTBOX E DO LINK DE ENDEREÇO --- */
@@ -122,7 +122,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             
-            <!-- LOGÓTIPO PIN + HAMBÚRGUER -->
+            <!-- LOGÓTIPO PIN + HAMBÚRGUER COM FIX DO CSS -->
             <a class="navbar-brand m-0 d-flex align-items-center" href="{% url 'home' %}">
                 <svg width="32" height="38" viewBox="0 0 36 38" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
                     <defs>
@@ -137,7 +137,7 @@
                     <path d="M12 20.5 C12 23.5, 24 23.5, 24 20.5 Z" fill="#ffffff"/>
                 </svg>
                 <span class="fs-4 fw-bold" style="letter-spacing: -0.5px;">
-                    <span class="text-white">Cabedelo</span><span style="background: linear-gradient(90deg, #ff416c, #ff4b2b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Food</span>
+                    <span class="text-white">Cabedelo</span><span style="background: linear-gradient(90deg, #ff416c, #ff4b2b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Food</span>
                 </span>
             </a>
 
@@ -198,15 +198,18 @@
         
         <div class="row">
             {% for rest in restaurantes %}
-            <div class="col-md-4 mb-4">
+            
+            <!-- Colunas ajustadas para 4 cartões por linha -->
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card h-100 shadow-sm">
                     
                     {% if rest.imagem %}
-                        <img src="{{ rest.imagem.url }}" class="card-img-top" alt="Foto de {{ rest.nome }}" style="height: 220px; object-fit: cover;">
+                        <!-- Altura da imagem reduzida para 170px -->
+                        <img src="{{ rest.imagem.url }}" class="card-img-top" alt="Foto de {{ rest.nome }}" style="height: 170px; object-fit: cover;">
                     {% else %}
-                        <div class="bg-sem-imagem text-white text-center py-5 rounded-top" style="height: 220px;">
-                            <span class="mt-4 d-block fw-semibold fs-1"><i class="bi bi-camera-video-off"></i></span>
-                            <span class="d-block fw-semibold mt-2">Sem Imagem</span>
+                        <div class="bg-sem-imagem text-white text-center py-4 rounded-top" style="height: 170px;">
+                            <span class="mt-4 d-block fw-semibold fs-2"><i class="bi bi-camera-video-off"></i></span>
+                            <span class="d-block fw-semibold mt-1" style="font-size: 0.9rem;">Sem Imagem</span>
                         </div>
                     {% endif %}
                     
@@ -215,46 +218,43 @@
                             <h5 class="card-title fw-bold mb-0">{{ rest.nome }}</h5>
                             
                             <div class="text-end">
-                                {% if rest.categoria %}
-                                    <span class="badge bg-danger rounded-pill">{{ rest.categoria.nome }}</span>
-                                {% endif %}
-                                
                                 {% if rest.esta_aberto is not None %}
                                     {% if rest.esta_aberto %}
-                                        <span class="badge bg-success rounded-pill ms-1 shadow-sm"><i class="bi bi-clock-fill me-1"></i>Aberto</span>
+                                        <span class="badge bg-success rounded-pill ms-1 shadow-sm" style="font-size: 0.65rem;"><i class="bi bi-clock-fill me-1"></i>Aberto</span>
                                     {% else %}
-                                        <span class="badge bg-secondary rounded-pill ms-1 shadow-sm"><i class="bi bi-clock me-1"></i>Fechado</span>
+                                        <span class="badge bg-secondary rounded-pill ms-1 shadow-sm" style="font-size: 0.65rem;"><i class="bi bi-clock me-1"></i>Fechado</span>
                                     {% endif %}
                                 {% endif %}
                             </div>
                         </div>
                         
                         <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1" style="font-size: 0.85rem;"></i>
                             {% if rest.media_estrelas > 0 %}
-                                <span class="fw-bold text-white">{{ rest.media_estrelas }}</span>
-                                <span class="text-muted ms-1" style="font-size: 0.8rem;">/ 5</span>
+                                <span class="fw-bold text-white" style="font-size: 0.9rem;">{{ rest.media_estrelas }}</span>
                             {% else %}
-                                <span class="text-muted" style="font-size: 0.85rem;">Novo (Sem avaliações)</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">Sem avaliações</span>
+                            {% endif %}
+                            
+                            {% if rest.categoria %}
+                                <span class="badge bg-danger rounded-pill ms-auto" style="font-size: 0.65rem;">{{ rest.categoria.nome }}</span>
                             {% endif %}
                         </div>
 
-                        <a href="https://www.google.com/maps/search/?api=1&query={{ rest.endereco|urlencode }}+Cabedelo+PB" target="_blank" class="text-decoration-none text-muted card-subtitle d-block mb-3 mt-2 endereco-link">
-                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }} <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.7rem;"></i>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ rest.endereco|urlencode }}+Cabedelo+PB" target="_blank" class="text-decoration-none text-muted card-subtitle d-block mb-3 mt-2 endereco-link" style="font-size: 0.8rem;">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}
                         </a>
 
-                        <p class="card-text" style="color: #c8c8d8;">{{ rest.descricao|truncatewords:15 }}</p>
+                        <!-- Texto truncado mais cedo para não ocupar muito espaço vertical -->
+                        <p class="card-text" style="color: #c8c8d8; font-size: 0.85rem;">{{ rest.descricao|truncatewords:12 }}</p>
                         
                         {% if rest.fotos.all %}
-                            <hr style="border-color: rgba(255,255,255,0.1);">
-                            <h6 class="text-white-50" style="font-size: 0.85rem;"><i class="bi bi-images me-1"></i>Galeria do Local</h6>
+                            <hr style="border-color: rgba(255,255,255,0.1); margin: 0.5rem 0;">
+                            <h6 class="text-white-50" style="font-size: 0.75rem;"><i class="bi bi-images me-1"></i>Galeria</h6>
                             <div class="fotos-grid">
                                 {% for foto in rest.fotos.all %}
                                     <div class="foto-card">
                                         <img src="{{ foto.imagem.url }}" alt="{{ foto.legenda|default:'Foto' }}" title="{{ foto.legenda|default:'Clique para ampliar' }}" onclick="abrirLightbox('{{ foto.imagem.url }}', '{{ foto.legenda|escapejs }}')">
-                                        {% if foto.legenda %}
-                                            <p title="{{ foto.legenda }}">{{ foto.legenda }}</p>
-                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -262,25 +262,25 @@
 
                     </div>
                     
-                    <div class="card-footer pb-3">
-                        <div class="mb-3">
+                    <div class="card-footer pb-3 pt-3">
+                        <div class="mb-2">
                             <a href="https://wa.me/55{{ rest.telefone|cut:' '|cut:'-'|cut:'('|cut:')' }}?text=Olá! Vi o restaurante {{ rest.nome }} no CabedeloFood e gostaria de saber mais." 
                                target="_blank" 
-                               class="btn w-100 fw-bold shadow-sm text-white" 
+                               class="btn btn-sm w-100 fw-bold shadow-sm text-white" 
                                style="background-color: #25D366; border-color: #25D366; transition: transform 0.2s;">
-                                <i class="bi bi-whatsapp me-2"></i>Pedir no WhatsApp
+                                <i class="bi bi-whatsapp me-1"></i>Pedir no WhatsApp
                             </a>
                         </div>
 
                         <div class="d-flex gap-2 flex-wrap">
                             {% if rest.link_cardapio %}
-                                <a href="{{ rest.link_cardapio }}" target="_blank" class="btn btn-outline-danger btn-sm flex-fill fw-semibold"><i class="bi bi-journal-text me-1"></i>Cardápio</a>
+                                <a href="{{ rest.link_cardapio }}" target="_blank" class="btn btn-outline-danger btn-sm flex-fill fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-journal-text me-1"></i>Cardápio</a>
                             {% else %}
-                                <button class="btn btn-outline-secondary btn-sm flex-fill fw-semibold" disabled><i class="bi bi-journal-x me-1"></i>Sem Cardápio</button>
+                                <button class="btn btn-outline-secondary btn-sm flex-fill fw-semibold" style="font-size: 0.75rem;" disabled><i class="bi bi-journal-x me-1"></i>Cardápio</button>
                             {% endif %}
                             
                             {% if rest.instagram %}
-                                <a href="{{ rest.instagram }}" target="_blank" class="btn btn-outline-primary btn-sm flex-fill fw-semibold"><i class="bi bi-instagram me-1"></i>Insta</a>
+                                <a href="{{ rest.instagram }}" target="_blank" class="btn btn-outline-primary btn-sm flex-fill fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-instagram me-1"></i>Insta</a>
                             {% endif %}
                         </div>
                     </div>
