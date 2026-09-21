@@ -115,6 +115,12 @@
         .endereco-link:hover {
             color: #ff4b2b !important;
         }
+        
+        /* HOVER DO BOTÃO DO DESENVOLVEDOR */
+        .dev-link:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: rgba(255, 75, 43, 0.5) !important;
+        }
     </style>
 </head>
 <body>
@@ -199,12 +205,10 @@
         <div class="row">
             {% for rest in restaurantes %}
             
-            <!-- Colunas ajustadas para 4 cartões por linha -->
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card h-100 shadow-sm">
                     
                     {% if rest.imagem %}
-                        <!-- Altura da imagem reduzida para 170px -->
                         <img src="{{ rest.imagem.url }}" class="card-img-top" alt="Foto de {{ rest.nome }}" style="height: 170px; object-fit: cover;">
                     {% else %}
                         <div class="bg-sem-imagem text-white text-center py-4 rounded-top" style="height: 170px;">
@@ -245,7 +249,6 @@
                             <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ rest.endereco }}
                         </a>
 
-                        <!-- Texto truncado mais cedo para não ocupar muito espaço vertical -->
                         <p class="card-text" style="color: #c8c8d8; font-size: 0.85rem;">{{ rest.descricao|truncatewords:12 }}</p>
                         
                         {% if rest.fotos.all %}
@@ -304,7 +307,12 @@
     <footer class="text-white text-center py-4 mt-5">
         <div class="container">
             <p class="mb-0 fw-semibold">© 2026 CabedeloFood. Todos os direitos reservados.</p>
-            <small class="text-muted">Apoiando o comércio local.</small>
+            <small class="text-muted d-block mb-3">Apoiando o comércio local.</small>
+            
+            <!-- NOVO CONTATO DO DESENVOLVEDOR -->
+            <a href="https://www.instagram.com/yanikbrenozl/" target="_blank" class="badge rounded-pill text-decoration-none px-3 py-2 dev-link" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #a0a0b8; transition: all 0.3s ease;">
+                <i class="bi bi-code-slash me-1"></i> Desenvolvido por <span style="color: #ff4b2b;">@yanikbrenozl</span>
+            </a>
         </div>
     </footer>
 
