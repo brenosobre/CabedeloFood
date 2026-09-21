@@ -116,7 +116,6 @@
             color: #ff4b2b !important;
         }
         
-        /* HOVER DO BOTÃO DO DESENVOLVEDOR */
         .dev-link:hover {
             background: rgba(255, 255, 255, 0.1) !important;
             border-color: rgba(255, 75, 43, 0.5) !important;
@@ -128,7 +127,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             
-            <!-- LOGÓTIPO PIN + HAMBÚRGUER COM FIX DO CSS -->
             <a class="navbar-brand m-0 d-flex align-items-center" href="{% url 'home' %}">
                 <svg width="32" height="38" viewBox="0 0 36 38" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
                     <defs>
@@ -267,12 +265,18 @@
                     
                     <div class="card-footer pb-3 pt-3">
                         <div class="mb-2">
-                            <a href="https://wa.me/55{{ rest.telefone|cut:' '|cut:'-'|cut:'('|cut:')' }}?text=Olá! Vi o restaurante {{ rest.nome }} no CabedeloFood e gostaria de saber mais." 
-                               target="_blank" 
-                               class="btn btn-sm w-100 fw-bold shadow-sm text-white" 
-                               style="background-color: #25D366; border-color: #25D366; transition: transform 0.2s;">
-                                <i class="bi bi-whatsapp me-1"></i>Pedir no WhatsApp
-                            </a>
+                            {% if rest.telefone %}
+                                <a href="https://wa.me/55{{ rest.telefone|cut:' '|cut:'-'|cut:'('|cut:')' }}?text=Olá! Vi o restaurante {{ rest.nome }} no CabedeloFood e gostaria de saber mais." 
+                                   target="_blank" 
+                                   class="btn btn-sm w-100 fw-bold shadow-sm text-white" 
+                                   style="background-color: #25D366; border-color: #25D366; transition: transform 0.2s;">
+                                    <i class="bi bi-whatsapp me-1"></i>Pedir no WhatsApp
+                                </a>
+                            {% else %}
+                                <button class="btn btn-outline-secondary btn-sm w-100 fw-semibold" style="font-size: 0.75rem;" disabled>
+                                    <i class="bi bi-telephone-x me-1"></i>Sem WhatsApp
+                                </button>
+                            {% endif %}
                         </div>
 
                         <div class="d-flex gap-2 flex-wrap">
@@ -285,6 +289,13 @@
                             {% if rest.instagram %}
                                 <a href="{{ rest.instagram }}" target="_blank" class="btn btn-outline-primary btn-sm flex-fill fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-instagram me-1"></i>Insta</a>
                             {% endif %}
+                        </div>
+
+                        <!-- BOTÃO DE AVALIAÇÕES / FEEDBACKS -->
+                        <div class="mt-2">
+                            <a href="{% url 'avaliacoes' rest.id %}" class="btn btn-sm w-100 fw-semibold text-warning" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); font-size: 0.75rem;">
+                                <i class="bi bi-star-fill me-1"></i> Ver Feedbacks & Mídia
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -309,7 +320,6 @@
             <p class="mb-0 fw-semibold">© 2026 CabedeloFood. Todos os direitos reservados.</p>
             <small class="text-muted d-block mb-3">Apoiando o comércio local.</small>
             
-            <!-- NOVO CONTATO DO DESENVOLVEDOR -->
             <a href="https://www.instagram.com/yanikbrenozl/" target="_blank" class="badge rounded-pill text-decoration-none px-3 py-2 dev-link" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #a0a0b8; transition: all 0.3s ease;">
                 <i class="bi bi-code-slash me-1"></i> Desenvolvido por <span style="color: #ff4b2b;">@yanikbrenozl</span>
             </a>
