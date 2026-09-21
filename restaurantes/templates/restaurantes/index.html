@@ -279,7 +279,7 @@
                             {% endif %}
                         </div>
 
-                        <!-- BOTÕES DE CARDÁPIO, AVALIAÇÕES (AMARELO) E INSTA ALINHADOS -->
+                        <!-- BOTÕES DE CARDÁPIO, FEEDBACK (AMARELO) E INSTAGRAM -->
                         <div class="d-flex gap-2 flex-wrap">
                             {% if rest.link_cardapio %}
                                 <a href="{{ rest.link_cardapio }}" target="_blank" class="btn btn-outline-danger btn-sm flex-fill fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-journal-text me-1"></i>Cardápio</a>
@@ -289,7 +289,7 @@
                             
                             <!-- BOTÃO AMARELO DE AVALIAÇÕES ENTRE CARDÁPIO E INSTA -->
                             <a href="{% url 'avaliacoes' rest.id %}" class="btn btn-warning btn-sm fw-bold text-dark px-2" style="font-size: 0.75rem;" title="Ver Feedbacks & Mídia">
-                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i> Feedback
                             </a>
 
                             {% if rest.instagram %}
