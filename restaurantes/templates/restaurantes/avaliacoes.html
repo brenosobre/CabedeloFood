@@ -6,16 +6,11 @@
     <title>Feedbacks - {{ restaurante.nome }}</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS Personalizado -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -43,13 +38,8 @@
             border-color: #ff4b2b;
             box-shadow: 0 0 0 0.25rem rgba(255, 75, 43, 0.25);
         }
-        ::placeholder {
-            color: #a0a0b8 !important;
-            opacity: 0.7;
-        }
-        .text-muted {
-            color: #a0a0b8 !important;
-        }
+        ::placeholder { color: #a0a0b8 !important; opacity: 0.7; }
+        .text-muted { color: #a0a0b8 !important; }
         .avaliacao-midia {
             max-width: 100%;
             max-height: 250px;
@@ -63,7 +53,6 @@
     
     <nav class="navbar navbar-dark navbar-custom shadow-sm">
         <div class="container">
-            <!-- Ícone de Voltar -->
             <a class="navbar-brand fw-bold" href="{% url 'home' %}"><i class="bi bi-arrow-left-short me-1"></i>Voltar</a>
             <span class="navbar-text text-white fw-bold fs-5">Avaliações: {{ restaurante.nome }}</span>
         </div>
@@ -77,7 +66,7 @@
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-4 text-center"><i class="bi bi-chat-right-text-fill text-warning me-2"></i>Deixe seu Feedback</h5>
                         
-                        <!-- ADICIONADO enctype PARA PERMITIR UPLOAD DE FOTOS E VÍDEOS -->
+                        <!-- ENCTYPE ADICIONADO PARA PERMITIR FOTOS E VÍDEOS -->
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="mb-3">
@@ -99,7 +88,6 @@
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h6 class="fw-bold mb-0 text-white"><i class="bi bi-person-circle me-2 text-secondary"></i>{{ avaliacao.autor }}</h6>
                                 
-                                <!-- Lógica para mostrar estrelas preenchidas ou vazias -->
                                 <span class="fs-6 text-warning">
                                     {% for i in "12345" %}
                                         {% if forloop.counter <= avaliacao.estrelas %}
@@ -109,22 +97,19 @@
                                         {% endif %}
                                     {% endfor %}
                                 </span>
-                                
                             </div>
                             
                             <p class="mb-2 mt-3" style="color: #c8c8d8;">{{ avaliacao.comentario }}</p>
 
-                            <!-- EXIBIÇÃO DE MÍDIA (FOTO OU VÍDEO) SE EXISTIR -->
+                            <!-- EXIBIÇÃO DA FOTO OU VÍDEO -->
                             {% if avaliacao.midia %}
                                 <div class="mt-3 mb-3">
                                     {% if avaliacao.midia.url|lower|slice:"-4:" == ".mp4" or avaliacao.midia.url|lower|slice:"-5:" == ".webm" or avaliacao.midia.url|lower|slice:"-4:" == ".mov" or "video" in avaliacao.midia.url|lower %}
-                                        <!-- Vídeo curto enviado pelo utilizador -->
                                         <video controls class="avaliacao-midia w-100">
                                             <source src="{{ avaliacao.midia.url }}" type="video/mp4">
                                             O seu navegador não suporta a reprodução de vídeos.
                                         </video>
                                     {% else %}
-                                        <!-- Imagem enviada pelo utilizador -->
                                         <img src="{{ avaliacao.midia.url }}" alt="Mídia da avaliação" class="avaliacao-midia">
                                     {% endif %}
                                 </div>
@@ -143,6 +128,5 @@
             
         </div>
     </div>
-
 </body>
 </html>
