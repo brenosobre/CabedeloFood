@@ -13,7 +13,10 @@ class Restaurante(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)
     descricao = models.TextField(blank=True, null=True)
     endereco = models.CharField(max_length=200)
-    telefone = models.CharField(max_length=20)
+    
+    # TELEFONE AGORA É OPCIONAL (blank=True, null=True)
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    
     imagem = models.ImageField(upload_to='fotos_restaurantes/', blank=True, null=True)
     link_cardapio = models.URLField(max_length=500, blank=True, null=True)
     instagram = models.URLField(max_length=500, blank=True, null=True)
