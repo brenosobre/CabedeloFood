@@ -13,10 +13,7 @@ class Restaurante(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True)
     descricao = models.TextField(blank=True, null=True)
     endereco = models.CharField(max_length=200)
-    
-    # TELEFONE AGORA É OPCIONAL (blank=True, null=True)
     telefone = models.CharField(max_length=20, blank=True, null=True)
-    
     imagem = models.ImageField(upload_to='fotos_restaurantes/', blank=True, null=True)
     link_cardapio = models.URLField(max_length=500, blank=True, null=True)
     instagram = models.URLField(max_length=500, blank=True, null=True)
@@ -25,7 +22,7 @@ class Restaurante(models.Model):
     latitude = models.FloatField(help_text="Ex: -6.9811", blank=True, null=True)
     longitude = models.FloatField(help_text="Ex: -34.8339", blank=True, null=True)
     
-    # NOVOS CAMPOS DE HORÁRIO
+    # CAMPOS DE HORÁRIO
     hora_abertura = models.TimeField(blank=True, null=True, help_text="Ex: 18:00")
     hora_fecho = models.TimeField(blank=True, null=True, help_text="Ex: 23:30")
     
@@ -55,6 +52,10 @@ class Avaliacao(models.Model):
     OPCOES_ESTRELAS = [(1, '1 Estrela'), (2, '2 Estrelas'), (3, '3 Estrelas'), (4, '4 Estrelas'), (5, '5 Estrelas')]
     estrelas = models.IntegerField(choices=OPCOES_ESTRELAS)
     comentario = models.TextField()
+    
+    # CAMPO DE MÍDIA PARA FOTOS E VÍDEOS CURTOS
+    midia = models.FileField(upload_to='avaliacoes/midias/', blank=True, null=True, verbose_name="Foto ou Vídeo")
+    
     data_criacao = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

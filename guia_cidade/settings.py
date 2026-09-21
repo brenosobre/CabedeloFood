@@ -104,3 +104,11 @@ MEDIA_URL = '/media/'
 
 # Pasta física no seu computador onde as imagens serão salvas
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'bnwks0r9',
+    'API_KEY': '826392446887592',
+    'API_SECRET': 'O_TEU_API_SECRET_AQUI'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

@@ -50,6 +50,13 @@
         .text-muted {
             color: #a0a0b8 !important;
         }
+        .avaliacao-midia {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -69,7 +76,9 @@
                 <div class="card shadow-lg">
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-4 text-center"><i class="bi bi-chat-right-text-fill text-warning me-2"></i>Deixe seu Feedback</h5>
-                        <form method="POST">
+                        
+                        <!-- ADICIONADO enctype PARA PERMITIR UPLOAD DE FOTOS E VÍDEOS -->
+                        <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="mb-3">
                                 {{ form.as_p }}
@@ -102,7 +111,25 @@
                                 </span>
                                 
                             </div>
+                            
                             <p class="mb-2 mt-3" style="color: #c8c8d8;">{{ avaliacao.comentario }}</p>
+
+                            <!-- EXIBIÇÃO DE MÍDIA (FOTO OU VÍDEO) SE EXISTIR -->
+                            {% if avaliacao.midia %}
+                                <div class="mt-3 mb-3">
+                                    {% if avaliacao.midia.url|lower|slice:"-4:" == ".mp4" or avaliacao.midia.url|lower|slice:"-5:" == ".webm" or avaliacao.midia.url|lower|slice:"-4:" == ".mov" or "video" in avaliacao.midia.url|lower %}
+                                        <!-- Vídeo curto enviado pelo utilizador -->
+                                        <video controls class="avaliacao-midia w-100">
+                                            <source src="{{ avaliacao.midia.url }}" type="video/mp4">
+                                            O seu navegador não suporta a reprodução de vídeos.
+                                        </video>
+                                    {% else %}
+                                        <!-- Imagem enviada pelo utilizador -->
+                                        <img src="{{ avaliacao.midia.url }}" alt="Mídia da avaliação" class="avaliacao-midia">
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
                             <small class="text-muted"><i class="bi bi-clock me-1"></i>Enviado em {{ avaliacao.data_criacao|date:"d/m/Y H:i" }}</small>
                         </div>
                     </div>
